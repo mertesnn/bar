@@ -1,33 +1,18 @@
-import React from 'react';
 import About from './Pages/About';
 import Contact from './Pages/Contact';
 import Drinks from './Pages/Drinks';
+import Nav from './Companents/Nav';
 import Home from './Pages/Home';
 import {
   BrowserRouter,
   Routes,
-  Route,
-  Link
+  Route
 } from 'react-router-dom';
-import {
-  Box,
-  Center
-} from '@chakra-ui/react';
 
 const App = () => {
   return (
     <BrowserRouter>
-
-      <Box bg='tomato' w='100%' p={4} color='white'>
-        <nav>
-          <Center>
-            <Link to="/">Home</Link>
-            <Link to="/drinks">Drinks</Link>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
-          </Center>
-        </nav>
-      </Box>
+      <Nav />
       <Routes>
         <Route path='/' element={<Home />}></Route>
         <Route path='/drinks' element={<Drinks />}></Route>

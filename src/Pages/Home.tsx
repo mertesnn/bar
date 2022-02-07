@@ -1,6 +1,15 @@
+import {
+    Container,
+    Text
+} from '@chakra-ui/react';
+
 const Home = () => {
     return (
-        <div>Home Page</div>
+        <Container maxW='container.xl' centerContent>
+            <Text fontSize='3xl'>
+                Home page
+            </Text>
+        </Container>
     );
 }
 

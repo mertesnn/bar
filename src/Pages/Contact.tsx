@@ -1,7 +1,16 @@
+import {
+    Container,
+    Text
+} from '@chakra-ui/react';
+
 const Contact = () => {
     return (
-        <div>Contact Page</div>
+        <Container maxW='container.xl' centerContent>
+            <Text fontSize='3xl'>
+                Contact Page
+            </Text>
+        </Container>
     );
-}
+};
 
 export default Contact;
