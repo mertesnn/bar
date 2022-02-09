@@ -84,6 +84,20 @@ const Nav = () => {
                         </Stack>
                     </Flex>
                 </Flex>
+                {isOpen ? (
+                    <Box pb={4} display={{ md: 'none' }}>
+                        <Stack as={'nav'} spacing={4}>
+                            {Links.map((link, index) => (
+                                <Route
+                                    to={link.to}
+                                    key={index}
+                                    className={colorMode === 'light' ? 'navLinkLight' : 'navLinkDark'}>
+                                    {link.text}
+                                </Route>
+                            ))}
+                        </Stack>
+                    </Box>
+                ) : null}
             </Box>
             <Center height='50px'></Center>
         </>
