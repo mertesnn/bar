@@ -1,5 +1,5 @@
-import logo from '../Images/logo-placeholder.png';
-import { Link as Route } from 'react-router-dom';
+import Logo from './Logo';
+import Links from './Links';
 import {
     Box,
     Flex,
@@ -7,7 +7,6 @@ import {
     useColorModeValue,
     Stack,
     useColorMode,
-    Image,
     IconButton,
     useDisclosure,
     HStack,
@@ -19,25 +18,6 @@ import {
     CloseIcon,
     HamburgerIcon
 } from '@chakra-ui/icons';
-
-const Links = [
-    {
-        text: 'Home',
-        to: '/'
-    },
-    {
-        text: 'Drinks',
-        to: '/drinks'
-    },
-    {
-        text: 'About',
-        to: '/about'
-    },
-    {
-        text: 'Contact',
-        to: '/contact'
-    }
-];
 
 const Nav = () => {
     const { colorMode, toggleColorMode } = useColorMode();
@@ -55,25 +35,13 @@ const Nav = () => {
                     />
                     <HStack spacing={8} alignItems={'center'}>
                         <Box>
-                            <Image
-                                boxSize='140px'
-                                objectFit='contain'
-                                src={logo}
-                                alt="Bar Logo"
-                            />
+                            <Logo />
                         </Box>
                         <HStack
                             as={'nav'}
                             spacing={4}
                             display={{ base: 'none', md: 'flex' }}>
-                            {Links.map((link, index) => (
-                                <Route
-                                    to={link.to}
-                                    key={index}
-                                    className={colorMode === 'light' ? 'navLinkLight' : 'navLinkDark'}>
-                                    {link.text}
-                                </Route>
-                            ))}
+                            <Links />
                         </HStack>
                     </HStack>
                     <Flex alignItems={'center'}>
@@ -87,14 +55,7 @@ const Nav = () => {
                 {isOpen ? (
                     <Box pb={4} display={{ md: 'none' }}>
                         <Stack as={'nav'} spacing={4}>
-                            {Links.map((link, index) => (
-                                <Route
-                                    to={link.to}
-                                    key={index}
-                                    className={colorMode === 'light' ? 'navLinkLight' : 'navLinkDark'}>
-                                    {link.text}
-                                </Route>
-                            ))}
+                            <Links />
                         </Stack>
                     </Box>
                 ) : null}
