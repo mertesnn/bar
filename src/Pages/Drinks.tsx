@@ -11,10 +11,47 @@ import {
     UnorderedList,
     ListItem,
     Divider,
-    Link
+    Image
 } from '@chakra-ui/react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+interface Categories {
+    categories: {
+        strCategory: string
+    }[],
+    random: {
+        idDrink: string,
+        strDrink: string,
+        strDrinkThumb: string,
+    }[]
+}
 
 const Drinks = () => {
+
+    const [categories, setCategories] = useState<Categories['categories']>([]);
+    const [randomCocktail, setRandomCockTail] = useState<Categories['random']>([]);
+
+    const getCategories = async () => {
+        const { data } = await axios.get(
+            'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'
+        );
+        setCategories(data?.drinks);
+    }
+
+    const getRandomCoctail = async () => {
+        const { data } = await axios.get(
+            'https://www.thecocktaildb.com/api/json/v1/1/random.php'
+        );
+        setRandomCockTail(data?.drinks);
+    }
+
+    useEffect(() => {
+        getCategories();
+        getRandomCoctail();
+    }, []);
+
     return (
         <Container maxW='6xl' pt='70px' pb='20px'>
             <InputGroup>
@@ -33,14 +70,14 @@ const Drinks = () => {
                         <Text fontSize='2xl'>
                             Categories
                         </Text>
-                        <Divider mt='2' mb='2' w='80%' />
+                        <Divider mt='3' mb='3' w='80%' />
                         <UnorderedList styleType='none'>
-                            <ListItem mb='1'><Link>Category 1</Link></ListItem>
-                            <ListItem mb='1'><Link>Category 2</Link></ListItem>
-                            <ListItem mb='1'><Link>Category 3</Link></ListItem>
-                            <ListItem mb='1'><Link>Category 4</Link></ListItem>
-                            <ListItem mb='1'><Link>Category 5</Link></ListItem>
-                            <ListItem mb='1'><Link>Category 6</Link></ListItem>
+                            {categories ? categories.map((item, index) => (
+                                <ListItem mb='2' key={index}>
+                                    {item?.strCategory}
+                                </ListItem>
+
+                            )) : 'No data.'}
                         </UnorderedList>
                     </Box>
                 </GridItem>
@@ -51,30 +88,17 @@ const Drinks = () => {
                             h='auto'
                             p='5'
                             gap='5'>
-                            <GridItem>
-                                <Box h='250px' w='250px' bg='tomato' />
-                                <Text textAlign='center' fontSize='xl' mt='2'>Cocktail 1</Text>
-                            </GridItem>
-                            <GridItem>
-                                <Box h='250px' w='250px' bg='tomato' />
-                                <Text textAlign='center' fontSize='xl' mt='2'>Cocktail 1</Text>
-                            </GridItem>
-                            <GridItem>
-                                <Box h='250px' w='250px' bg='tomato' />
-                                <Text textAlign='center' fontSize='xl' mt='2'>Cocktail 1</Text>
-                            </GridItem>
-                            <GridItem>
-                                <Box h='250px' w='250px' bg='tomato' />
-                                <Text textAlign='center' fontSize='xl' mt='2'>Cocktail 1</Text>
-                            </GridItem>
-                            <GridItem>
-                                <Box h='250px' w='250px' bg='tomato' />
-                                <Text textAlign='center' fontSize='xl' mt='2'>Cocktail 1</Text>
-                            </GridItem>
-                            <GridItem>
-                                <Box h='250px' w='250px' bg='tomato' />
-                                <Text textAlign='center' fontSize='xl' mt='2'>Cocktail 1</Text>
-                            </GridItem>
+                            {randomCocktail ? randomCocktail.map((item, index) => (
+                                <Link to={item.idDrink} key={index}>
+                                    <Box>
+                                        <Image
+                                            src={`${item.strDrinkThumb}/preview`}
+                                            rounded='md'
+                                            m='auto' />
+                                    </Box>
+                                    <Text textAlign='center' fontSize='xl' mt='2'>{item.strDrink}</Text>
+                                </Link>
+                            )) : 'No data.'}
                         </Grid>
                     </Box>
                 </GridItem>
