@@ -5,15 +5,17 @@ import {
 } from "@chakra-ui/react"
 import { ReactNode } from "react"
 
+type SocialButtonTypes = {
+    children: ReactNode,
+    label: string,
+    href: string
+}
+
 const SocialButton = ({
     children,
     label,
     href,
-}: {
-    children: ReactNode;
-    label: string;
-    href: string;
-}) => {
+}: SocialButtonTypes) => {
     return (
         <chakra.button
             bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}

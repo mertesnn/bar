@@ -9,48 +9,62 @@ import {
     Heading,
     SimpleGrid,
     StackDivider,
-    useColorModeValue,
-    List,
-    ListItem,
+    useColorModeValue
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Details from '../Companents/Details';
+import Ingredients from '../Companents/Ingredients';
 
 const SingleDrink = () => {
     const { drinkId } = useParams();
 
-    const [drink, setDrink] = useState<Drink['drink']>();
-    const [ingredients, setIngredients] = useState<{ ingredients: string; measures: string; }[] | undefined>([]);
+    const [drink, setDrink] = useState<Drink['drink'] | undefined>(undefined);
+    const [ingredientsAndMeasures, setIngredientsAndMeasures] = useState<Drink['ingredientsAndMeasures'] | undefined>(undefined);
 
-    const getDrink = async () => {
-        const { data } = await axios.get(
-            `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`
-        );
-        setDrink(data?.drinks[0]);
-    }
+    const getDrink = useCallback(
+        async () => {
+            const { data } = await axios.get(
+                `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`
+            );
+            setDrink(data?.drinks[0]);
+        },
+        [drinkId],
+    )
 
-    const objectToArray = () => {
-        const newIngredients = [];
-        const newArray = drink ? Object.values(drink) : [];
+    const pushIngredients = useCallback(
+        () => {
+            const arrayIngredient: String[] = [];
+            const arrayMeasures: String[] = [];
+            const arrayBoth = [];
+            drink && Object?.entries(drink)?.forEach((item) => {
+                if (item[0].startsWith('strIngredient') && item[1])
+                    arrayIngredient.push(item[1]);
+                else if (item[0].startsWith('strMeasure') && item[1])
+                    arrayMeasures.push(item[1]);
+            });
 
-        for (let i = 17, k = 32; (i < 32) && (k < 47); i++, k++) {
-            let x: Drink['ingredients'] = {
-                ingredients: newArray[i],
-                measures: newArray[k]
-            };
-            newIngredients.push(x);
-        }
-        setIngredients(newIngredients);
-    }
+            for (let i = 0; i < arrayIngredient.length; i++) {
+                const obj: Drink['ingredients'] = {
+                    ingredients: arrayIngredient[i],
+                    measures: arrayMeasures[i]
+                }
+                arrayBoth.push(obj);
+            }
+            setIngredientsAndMeasures(arrayBoth);
+        },
+        [drink],
+    )
+
 
     useEffect(() => {
         getDrink();
-    }, []);
+    }, [getDrink]);
 
     useEffect(() => {
-        objectToArray();
-    }, [drink]);
+        pushIngredients();
+    }, [drink, pushIngredients]);
 
     return (
         <Container maxW={'7xl'}>
@@ -78,7 +92,6 @@ const SingleDrink = () => {
                             {drink?.strDrink}
                         </Heading>
                     </Box>
-
                     <Stack
                         spacing={{ base: 4, sm: 6 }}
                         direction={'column'}
@@ -92,7 +105,6 @@ const SingleDrink = () => {
                                 {drink?.strInstructions}
                             </Text>
                         </VStack>
-
                         <Box>
                             <Text
                                 fontSize={{ base: '16px', lg: '18px' }}
@@ -102,49 +114,7 @@ const SingleDrink = () => {
                                 mb={'4'}>
                                 Details
                             </Text>
-
-                            <List spacing={2}>
-                                {drink?.strCategory ? (
-                                    <ListItem>
-                                        <Text as={'span'} fontWeight={'bold'}>
-                                            Category:
-                                        </Text>
-                                        {` ${drink?.strCategory}`}
-                                    </ListItem>
-                                ) : ''}
-                                {drink?.strIBA ? (
-                                    <ListItem>
-                                        <Text as={'span'} fontWeight={'bold'}>
-                                            IBA:
-                                        </Text>
-                                        {` ${drink?.strIBA}`}
-                                    </ListItem>
-                                ) : ''}
-                                {drink?.strAlcoholic ? (
-                                    <ListItem>
-                                        <Text as={'span'} fontWeight={'bold'}>
-                                            Alcoholic:
-                                        </Text>
-                                        {` ${drink?.strAlcoholic}`}
-                                    </ListItem>
-                                ) : ''}
-                                {drink?.strGlass ? (
-                                    <ListItem>
-                                        <Text as={'span'} fontWeight={'bold'}>
-                                            Glass:
-                                        </Text>
-                                        {` ${drink?.strGlass}`}
-                                    </ListItem>
-                                ) : ''}
-                                {drink?.strTags ? (
-                                    <ListItem>
-                                        <Text as={'span'} fontWeight={'bold'}>
-                                            Category:
-                                        </Text>
-                                        {` ${drink?.strTags}`}
-                                    </ListItem>
-                                ) : ''}
-                            </List>
+                            <Details drink={drink} />
                         </Box>
                         <Box>
                             <Text
@@ -155,16 +125,7 @@ const SingleDrink = () => {
                                 mb={'4'}>
                                 Ingredients
                             </Text>
-
-                            <SimpleGrid minChildWidth='120px' spacing='10px'>
-                                {ingredients ? ingredients.map((item, index) => (item.ingredients !== null ?
-                                    <Box key={index}>
-                                        <Image src={`https://www.thecocktaildb.com/images/ingredients/${item.ingredients}-Small.png`} m='auto' />
-                                        <Text textAlign='center' mt='2'>{item.ingredients}</Text>
-                                        <Text textAlign='center'>( {item.measures} )</Text>
-                                    </Box>
-                                    : '')) : 'no'}
-                            </SimpleGrid>
+                            <Ingredients ingredients={ingredientsAndMeasures} />
                         </Box>
                     </Stack>
                 </Stack>
