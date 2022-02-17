@@ -11,7 +11,7 @@ import {
     Image
 } from '@chakra-ui/react';
 
-export default function Home() {
+const Home = () => {
     return (
         <Container maxW={'7xl'}>
             <Stack
@@ -35,7 +35,7 @@ export default function Home() {
                                 bottom: 1,
                                 left: 0,
                                 bg: 'red.400',
-                                zIndex: -1,
+                                zIndex: -1
                             }}>
                             Welcome to,
                         </Text>
@@ -70,8 +70,7 @@ export default function Home() {
                                 rounded={'full'}
                                 size={'lg'}
                                 fontWeight={'normal'}
-                                px={6}
-                            >
+                                px={6}>
                                 About Us
                             </Button>
                         </Link>
@@ -83,25 +82,24 @@ export default function Home() {
                     align={'center'}
                     position={'relative'}
                     w={'full'}>
-
                     <Box
                         position={'relative'}
                         rounded={'2xl'}
                         boxShadow={'2xl'}
                         width={'full'}
                         overflow={'hidden'}>
-
                         <Image
                             alt={'Hero Image'}
                             fit={'cover'}
                             align={'center'}
                             w={'100%'}
                             h={'100%'}
-                            src={BarHome}
-                        />
+                            src={BarHome} />
                     </Box>
                 </Flex>
             </Stack>
         </Container>
-    );
+    )
 }
+
+export default Home

@@ -1,4 +1,4 @@
-import { SearchIcon } from '@chakra-ui/icons';
+import { CloseIcon, HamburgerIcon, SearchIcon } from '@chakra-ui/icons';
 import {
     Container,
     Input,
@@ -8,97 +8,151 @@ import {
     Grid,
     GridItem,
     Text,
-    UnorderedList,
-    ListItem,
-    Divider,
-    Image
+    Image,
+    Spinner,
+    Button,
+    useDisclosure,
+    IconButton,
+    VStack,
+    HStack
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-interface Categories {
-    categories: {
-        strCategory: string
-    }[],
-    random: {
-        idDrink: string,
-        strDrink: string,
-        strDrinkThumb: string,
-    }[]
-}
+import { getCategories, getDrinksBySelectedCategory, getSearchedDrinks } from 'src/Utils/Services';
+import { debounce } from 'src/Utils/Functions';
 
 const Drinks = () => {
 
-    const [categories, setCategories] = useState<Categories['categories']>([]);
-    const [randomCocktail, setRandomCockTail] = useState<Categories['random']>([]);
+    const [categories, setCategories] = useState<Drink['categories'] | undefined>(undefined);
+    const [drinksByCategory, setDrinksByCategory] = useState<Drink['random'] | undefined>(undefined);
 
-    const getCategories = async () => {
-        const { data } = await axios.get(
-            'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'
-        );
-        setCategories(data?.drinks);
-    }
-
-    const getRandomCoctail = async () => {
-        const { data } = await axios.get(
-            'https://www.thecocktaildb.com/api/json/v1/1/random.php'
-        );
-        setRandomCockTail(data?.drinks);
-    }
+    const searchInput = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
-        getCategories();
-        getRandomCoctail();
+        const handleCategoriesData = async () => {
+            const data = await getCategories();
+            setCategories(data);
+        }
+        handleCategoriesData();
     }, []);
 
+    const handleSearchDrink = async () => {
+        const key = searchInput?.current?.value;
+        const data = await getSearchedDrinks(key);
+        setDrinksByCategory(data);
+    }
+
+    const handleSelectedCategory = async (category: string | undefined) => {
+        const data = await getDrinksBySelectedCategory(category);
+        setDrinksByCategory(data);
+    }
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     return (
-        <Container maxW='6xl' pt='70px' pb='20px'>
+        <Container
+            maxW='6xl'
+            pt='70px'
+            pb='70px'>
             <InputGroup>
                 <InputLeftElement
                     pointerEvents='none'
                     children={<SearchIcon color='gray.300' />}
                 />
-                <Input type='text' placeholder='Search for a Cocktail...' />
+                <Input
+                    type='text'
+                    ref={searchInput}
+                    placeholder='Search for a Cocktail...'
+                    onChange={debounce(handleSearchDrink, 1000)}
+                />
             </InputGroup>
             <Grid
                 templateColumns='repeat(4, 1fr)'
                 mt='50px'
                 h='auto'>
-                <GridItem h='350px' colSpan={1}>
-                    <Box w='100%' h='100%' pl='8' pt='10px'>
-                        <Text fontSize='2xl'>
-                            Categories
-                        </Text>
-                        <Divider mt='3' mb='3' w='80%' />
-                        <UnorderedList styleType='none'>
-                            {categories ? categories.map((item, index) => (
-                                <ListItem mb='2' key={index}>
-                                    {item?.strCategory}
-                                </ListItem>
-
-                            )) : 'No data.'}
-                        </UnorderedList>
+                <GridItem
+                    colSpan={{ base: 4, md: 1 }}
+                    borderRight={{ base: '0', md: '1px' }}
+                    borderColor='gray'>
+                    <Box
+                        w='100%'
+                        h='100%'>
+                        <HStack>
+                            <IconButton
+                                size={'md'}
+                                icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+                                aria-label={'Open Menu'}
+                                display={{ md: 'none' }}
+                                onClick={isOpen ? onClose : onOpen} />
+                            <Text
+                                fontSize='2xl'
+                                h='14'
+                                fontWeight='bold'
+                                alignItems='center'
+                                display='flex'>
+                                Categories
+                            </Text>
+                        </HStack>
+                        <VStack
+                            alignItems='baseline'
+                            mt='3'
+                            display={{ base: isOpen ? 'flex' : 'none', md: "flex" }}>
+                            {categories ?
+                                categories.map((item, index) =>
+                                    <Button
+                                        colorScheme='gray'
+                                        justifyContent='left'
+                                        w='90%'
+                                        variant='ghost'
+                                        key={index}
+                                        onClick={debounce(() =>
+                                            handleSelectedCategory(item?.strCategory), 500)}>
+                                        {item?.strCategory}
+                                    </Button>
+                                ) : <Spinner />}
+                        </VStack>
                     </Box>
                 </GridItem>
-                <GridItem colSpan={3}>
+                <GridItem colSpan={{ base: 4, md: 3 }}>
                     <Box w='100%' h='100%'>
                         <Grid
-                            templateColumns='repeat(3, 1fr)'
+                            templateColumns={{
+                                base: 'repeat(1, 1fr)',
+                                sm: drinksByCategory ? 'repeat(2, 1fr)' : 'repeat(1, 1fr)',
+                                md: drinksByCategory ? 'repeat(3, 1fr)' : 'repeat(1, 1fr)'
+                            }}
                             h='auto'
                             p='5'
                             gap='5'>
-                            {randomCocktail ? randomCocktail.map((item, index) => (
-                                <Link to={item.idDrink} key={index}>
-                                    <Box>
-                                        <Image
-                                            src={`${item.strDrinkThumb}/preview`}
-                                            rounded='md'
-                                            m='auto' />
-                                    </Box>
-                                    <Text textAlign='center' fontSize='xl' mt='2'>{item.strDrink}</Text>
-                                </Link>
-                            )) : 'No data.'}
+                            {drinksByCategory ?
+                                drinksByCategory.map((item, index) =>
+                                    <Link
+                                        to={item.idDrink}
+                                        key={index}>
+                                        <Box>
+                                            <Image
+                                                src={`${item.strDrinkThumb}/preview`}
+                                                rounded='md'
+                                                m='auto' />
+                                        </Box>
+                                        <Text
+                                            textAlign='center'
+                                            fontSize='xl' mt='2'>
+                                            {item.strDrink}
+                                        </Text>
+                                    </Link>
+                                ) :
+                                <VStack>
+                                    <Text fontSize='2xl'
+                                        fontWeight='bold'
+                                        alignItems='center'
+                                        display='flex'>
+                                        No drinks yet!
+                                    </Text>
+                                    <Text>
+                                        Select a category or search for a coctail.
+                                    </Text>
+                                </VStack>}
                         </Grid>
                     </Box>
                 </GridItem>

@@ -1,4 +1,4 @@
-export const Links = [
+export const Links: Drink['links'] = [
     {
         text: 'Home',
         to: '/'

@@ -1,4 +1,8 @@
 interface Drink {
+    links: {
+        text: string,
+        to: string
+    }[],
     drink: {
         idDrink: string,
         strDrink: string,
@@ -17,6 +21,13 @@ interface Drink {
     ingredientsAndMeasures: {
         ingredients: String,
         measures: String
+    }[],
+    categories: {
+        strCategory: string
+    }[],
+    random: {
+        idDrink: string,
+        strDrink: string,
+        strDrinkThumb: string,
     }[]
-
 }

@@ -13,7 +13,9 @@ import { FaInstagram, FaGithub, FaLinkedinIn } from 'react-icons/fa';
 const Footer = () => {
     return (
         <Box
-            mt={100}
+
+            position='sticky'
+            top='100vh'
             bg={useColorModeValue('gray.50', 'gray.900')}
             color={useColorModeValue('gray.700', 'gray.200')}>
             <Container
