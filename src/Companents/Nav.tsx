@@ -10,7 +10,9 @@ import {
     IconButton,
     useDisclosure,
     HStack,
-    Center
+    Center,
+    Grid,
+    GridItem
 } from '@chakra-ui/react';
 import {
     MoonIcon,
@@ -24,37 +26,43 @@ const Nav = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <>
-            <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
-                <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+            <Box
+                bg={useColorModeValue('red.100', 'gray.900')}
+                px={4}
+                paddingY='5px'>
+                <Flex h={16} alignItems={'center'} justifyContent='space-between'>
                     <IconButton
+                        bg='red.400'
                         size={'md'}
                         icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
                         aria-label={'Open Menu'}
                         display={{ md: 'none' }}
                         onClick={isOpen ? onClose : onOpen}
                     />
-                    <HStack spacing={8} alignItems={'center'}>
-                        <Box>
+                    <Center>
+                        <Box >
                             <Logo />
                         </Box>
                         <HStack
                             as={'nav'}
+                            ml='10'
                             spacing={4}
                             display={{ base: 'none', md: 'flex' }}>
                             <Links />
                         </HStack>
-                    </HStack>
-                    <Flex alignItems={'center'}>
+                    </Center>
+
+                    <Flex>
                         <Stack direction={'row'} spacing={7}>
-                            <Button onClick={toggleColorMode}>
-                                {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                            <Button onClick={toggleColorMode} bg='red.400'>
+                                {colorMode === 'light' ? <MoonIcon color='white' /> : <SunIcon />}
                             </Button>
                         </Stack>
                     </Flex>
                 </Flex>
                 {isOpen ? (
-                    <Box pb={4} display={{ md: 'none' }}>
-                        <Stack as={'nav'} spacing={4}>
+                    <Box pb={4} display={{ base: 'flex', md: 'none' }} justifyContent='center'>
+                        <Stack as={'nav'} spacing={4} alignItems='center'>
                             <Links />
                         </Stack>
                     </Box>

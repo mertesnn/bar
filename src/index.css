@@ -10,16 +10,21 @@ body {
   height: 100vh;
 }
 .navLinkLight {
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.375rem;
+  transition: all 0.3s;
 }
 .navLinkLight:hover {
-  background: #E2E8F0;
+  background: #F56565;
+  color: #F7FAFC;
+  transition: all 0.3s;
 }
 .navLinkDark {
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.375rem;
+  transition: all 0.3s;
 }
 .navLinkDark:hover {
-  background: #2D3748;
+  background: #F56565;
+  transition: all 0.3s;
 }

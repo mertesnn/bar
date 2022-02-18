@@ -1,13 +1,15 @@
-import BarLogo from '../Images/logo-placeholder.png';
+import Light from '../Images/logoLight.svg';
+import Dark from '../Images/logoDark.svg';
 import { Link } from 'react-router-dom';
-import { Image } from '@chakra-ui/react';
+import { Image, useColorMode } from '@chakra-ui/react';
 
 const Logo = () => {
+    const { colorMode } = useColorMode();
     return (
         <Link to='/'>
             <Image
-                w='140px'
-                src={BarLogo}
+                h='80px'
+                src={colorMode === 'light' ? Light : Dark}
                 alt="Bar Logo" />
         </Link>
     );

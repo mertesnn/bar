@@ -16,7 +16,7 @@ const Footer = () => {
 
             position='sticky'
             top='100vh'
-            bg={useColorModeValue('gray.50', 'gray.900')}
+            bg={useColorModeValue('red.100', 'gray.900')}
             color={useColorModeValue('gray.700', 'gray.200')}>
             <Container
                 as={Stack}
@@ -33,7 +33,7 @@ const Footer = () => {
             <Box
                 borderTopWidth={1}
                 borderStyle={'solid'}
-                borderColor={useColorModeValue('gray.200', 'gray.700')}>
+                borderColor='red.400'>
                 <Container
                     as={Stack}
                     maxW={'6xl'}
