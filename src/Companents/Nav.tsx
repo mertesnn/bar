@@ -10,9 +10,7 @@ import {
     IconButton,
     useDisclosure,
     HStack,
-    Center,
-    Grid,
-    GridItem
+    Center
 } from '@chakra-ui/react';
 import {
     MoonIcon,
