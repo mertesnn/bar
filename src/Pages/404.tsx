@@ -1,7 +1,9 @@
 import {
+    Button,
     Container,
     Text
 } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
 const ErrorPage = () => {
     return (
@@ -12,6 +14,15 @@ const ErrorPage = () => {
             <Text fontSize='2xl'>
                 Page not found.
             </Text>
+            <Link to='/'>
+                <Button
+                    mt='6'
+                    bg='red.400'
+                    color='white'
+                    _hover={{ bg: 'red.500' }}>
+                    Back to Home
+                </Button>
+            </Link>
         </Container>
     );
 };
