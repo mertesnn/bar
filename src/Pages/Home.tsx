@@ -59,7 +59,6 @@ const Home = () => {
                                 size={'lg'}
                                 fontWeight={'normal'}
                                 px={6}
-                                colorScheme={'red'}
                                 bg={'red.400'}
                                 _hover={{ bg: 'red.500' }}>
                                 Our Drinks

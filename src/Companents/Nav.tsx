@@ -66,7 +66,6 @@ const Nav = () => {
                     </Box>
                 ) : null}
             </Box>
-            <Center height='50px'></Center>
         </>
     );
 }

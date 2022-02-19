@@ -40,20 +40,20 @@ const SingleDrink = () => {
 
     const DefaultContent = () => {
         return (
-            <Container maxW={'7xl'} pb='70px'>
+            <Container maxW={'7xl'} py='70px'>
                 <SimpleGrid
                     columns={{ base: 1, lg: 2 }}
                     spacing={{ base: 8, md: 10 }}
                     py={{ base: 18, md: 0 }}>
                     <Flex>
                         <Image
-                            rounded={'md'}
+                            rounded={'2xl'}
                             alt={'product image'}
                             src={drink?.strDrinkThumb}
-                            fit={'cover'}
                             align={'center'}
+                            fit='cover'
                             w={'100%'}
-                            h={{ base: '100%', sm: '400px', lg: '500px' }}
+                            h={{ lg: '500px' }}
                         />
                     </Flex>
                     <Stack spacing={{ base: 6, md: 10 }}>
@@ -70,7 +70,7 @@ const SingleDrink = () => {
                             direction={'column'}
                             divider={
                                 <StackDivider
-                                    borderColor={useColorModeValue('gray.200', 'gray.600')}
+                                    borderColor='red.300'
                                 />
                             }>
                             <VStack spacing={{ base: 4, sm: 6 }}>
@@ -81,7 +81,7 @@ const SingleDrink = () => {
                             <Box>
                                 <Text
                                     fontSize={{ base: '16px', lg: '18px' }}
-                                    color={useColorModeValue('yellow.500', 'yellow.300')}
+                                    color={useColorModeValue('red.300', 'red.400')}
                                     fontWeight={'500'}
                                     textTransform={'uppercase'}
                                     mb={'4'}>
@@ -92,7 +92,7 @@ const SingleDrink = () => {
                             <Box>
                                 <Text
                                     fontSize={{ base: '16px', lg: '18px' }}
-                                    color={useColorModeValue('yellow.500', 'yellow.300')}
+                                    color={useColorModeValue('red.300', 'red.400')}
                                     fontWeight={'500'}
                                     textTransform={'uppercase'}
                                     mb={'4'}>

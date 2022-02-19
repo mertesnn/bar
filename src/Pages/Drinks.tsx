@@ -1,4 +1,8 @@
 import { CloseIcon, HamburgerIcon, SearchIcon } from '@chakra-ui/icons';
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getCategories, getDrinksBySelectedCategory, getSearchedDrinks } from 'src/Utils/Services';
+import { debounce } from 'src/Utils/Functions';
 import {
     Container,
     Input,
@@ -16,17 +20,18 @@ import {
     VStack,
     HStack
 } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getCategories, getDrinksBySelectedCategory, getSearchedDrinks } from 'src/Utils/Services';
-import { debounce } from 'src/Utils/Functions';
 
 const Drinks = () => {
 
-    const [categories, setCategories] = useState<Drink['categories'] | undefined>(undefined);
-    const [drinksByCategory, setDrinksByCategory] = useState<Drink['random'] | undefined>(undefined);
-
-    const searchInput = useRef<HTMLInputElement | null>(null);
+    const [categories, setCategories] = useState<Drink['categories'] | undefined>(
+        undefined
+    );
+    const [drinksByCategory, setDrinksByCategory] = useState<Drink['random'] | undefined>(
+        undefined
+    );
+    const searchInput = useRef<HTMLInputElement | null>(
+        null
+    );
 
     useEffect(() => {
         const handleCategoriesData = async () => {
@@ -57,12 +62,14 @@ const Drinks = () => {
             <InputGroup>
                 <InputLeftElement
                     pointerEvents='none'
-                    children={<SearchIcon color='gray.300' />}
+                    children={<SearchIcon color='red.300' />}
                 />
                 <Input
                     type='text'
                     ref={searchInput}
                     placeholder='Search for a Cocktail...'
+                    _active={{ borderColor: '#F56565' }}
+                    _focus={{ borderColor: '#F56565' }}
                     onChange={debounce(handleSearchDrink, 1000)}
                 />
             </InputGroup>
@@ -73,18 +80,20 @@ const Drinks = () => {
                 <GridItem
                     colSpan={{ base: 4, md: 1 }}
                     borderRight={{ base: '0', md: '1px' }}
-                    borderColor='gray'>
+                    borderRightColor='#F56565 !important'>
                     <Box
                         w='100%'
                         h='100%'>
                         <HStack>
                             <IconButton
+                                bg='red.400'
                                 size={'md'}
                                 icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
                                 aria-label={'Open Menu'}
                                 display={{ md: 'none' }}
                                 onClick={isOpen ? onClose : onOpen} />
                             <Text
+                                color='#F56565'
                                 fontSize='2xl'
                                 h='14'
                                 fontWeight='bold'
@@ -143,7 +152,9 @@ const Drinks = () => {
                                     </Link>
                                 ) :
                                 <VStack>
-                                    <Text fontSize='2xl'
+                                    <Text
+                                        color='#F56565'
+                                        fontSize='2xl'
                                         fontWeight='bold'
                                         alignItems='center'
                                         display='flex'>
