@@ -6,6 +6,12 @@ export const getDrink = async (drinkId: string | undefined) => {
     );
     return res?.data?.drinks[0];
 }
+export const getRandomDrink = async () => {
+    const res = await Axios.get(
+        'https://www.thecocktaildb.com/api/json/v1/1/random.php'
+    );
+    return res?.data?.drinks[0];
+}
 
 export const getCategories = async () => {
     const res = await Axios.get(

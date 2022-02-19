@@ -8,6 +8,7 @@ import SingleDrink from './Pages/SingleDrink';
 import About from './Pages/About';
 import Contact from './Pages/Contact';
 import ErrorPage from './Pages/404';
+import Random from './Pages/Random';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path='/drinks' element={<Drinks />} />
             <Route path='/drinks/:drinkId' element={<SingleDrink />} />
+            <Route path='/random' element={<Random />} />
             <Route path='/about' element={<About />} />
             <Route path='/contact' element={<Contact />} />
             <Route path="*" element={<ErrorPage />} />

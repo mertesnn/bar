@@ -8,6 +8,10 @@ export const Links: Drink['links'] = [
         to: '/drinks'
     },
     {
+        text: 'Random Drink',
+        to: '/random'
+    },
+    {
         text: 'About',
         to: '/about'
     },
