@@ -49,7 +49,7 @@ const Contact = () => {
                         </HStack>
                         <HStack>
                             <FaEnvelope fontSize='2rem' color='#F56565' />
-                            <Text fontSize='lg'>mert_esen_@homtail.com</Text>
+                            <Text fontSize='lg'>mert_esen_@hotmail.com</Text>
                         </HStack>
                     </VStack>
                     <Stack direction={'row'} justifyContent='center' spacing={6}>
